@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # Nginx reverse proxy
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+
+  # React + Vite frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    environment:
+      - VITE_API_URL=http://localhost/api
+    networks:
+      - app-network
+
+  # FastAPI backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=postgresql://saas_user:saas_password@db:5432/saas_starter
+      - SESSION_SECRET=change-this-secret-key-in-production-must-be-32-bytes-long
+      - SESSION_EXPIRATION_HOURS=24
+      - DEBUG=true
+      - ALLOWED_ORIGINS=http://localhost
+      - SECURE_COOKIES=false
+      - ADMIN_EMAIL=admin@example.com
+      - ADMIN_PASSWORD=admin123
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  # PostgreSQL database
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=saas_user
+      - POSTGRES_PASSWORD=saas_password
+      - POSTGRES_DB=saas_starter
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
