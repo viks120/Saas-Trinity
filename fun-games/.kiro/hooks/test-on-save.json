@@ -1,0 +1,13 @@
+{
+  "name": "Run Tests on Save",
+  "description": "Automatically run backend tests when Python files are saved",
+  "trigger": {
+    "type": "file_save",
+    "pattern": "starter-kit/backend/**/*.py"
+  },
+  "action": {
+    "type": "command",
+    "command": "cd starter-kit/backend && pytest tests/ -v --tb=short"
+  },
+  "enabled": false
+}

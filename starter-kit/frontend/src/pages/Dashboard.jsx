@@ -45,16 +45,27 @@ export default function Dashboard() {
 
       {currentTier && (
         <div style={styles.card}>
-          <h2>Available Features</h2>
+          <h2>Your {currentTier.name} Tier Features</h2>
           <ul style={styles.featureList}>
-            {Object.entries(currentTier.features).map(([key, value]) => (
-              <li key={key} style={styles.featureItem}>
-                <span style={styles.featureName}>{key.replace(/_/g, ' ')}:</span>
-                <span style={value ? styles.enabled : styles.disabled}>
-                  {typeof value === 'boolean' ? (value ? '✓' : '✗') : value}
-                </span>
-              </li>
-            ))}
+            {Object.entries(currentTier.features).map(([key, value]) => {
+              let displayValue = value;
+              if (typeof value === 'boolean') {
+                displayValue = value ? '✓ Enabled' : '✗ Disabled';
+              } else if (value === null) {
+                displayValue = 'Unlimited';
+              } else if (value === -1) {
+                displayValue = 'Unlimited';
+              }
+              
+              return (
+                <li key={key} style={styles.featureItem}>
+                  <span style={styles.featureName}>{key.replace(/_/g, ' ')}:</span>
+                  <span style={value ? styles.enabled : styles.disabled}>
+                    {displayValue}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

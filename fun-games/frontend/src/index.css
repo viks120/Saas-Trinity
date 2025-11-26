@@ -1,0 +1,183 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Fun Games Color Palette */
+  --primary-blue: #667eea;
+  --primary-purple: #764ba2;
+  --secondary-orange: #F59E0B;
+  --secondary-pink: #f093fb;
+  --success-green: #10B981;
+  --error-red: #EF4444;
+  --background-light: #F9FAFB;
+  --text-dark: #111827;
+  --text-gray: #6B7280;
+  
+  /* Tier Colors */
+  --tier-free: #10B981;
+  --tier-pro: #F59E0B;
+  --tier-enterprise: #8B5CF6;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-dark);
+  background: var(--background-light);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Fun Loading Animation */
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(102, 126, 234, 0.1);
+  border-top-color: var(--primary-blue);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Smooth Transitions */
+button, a, .card {
+  transition: all 0.3s ease;
+}
+
+/* Fun Button Styles */
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Gradient Backgrounds */
+.gradient-primary {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+}
+
+.gradient-secondary {
+  background: linear-gradient(135deg, var(--secondary-pink) 0%, var(--secondary-orange) 100%);
+}
+
+.gradient-success {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+}
+
+/* Tier Badge Styles */
+.tier-badge-free {
+  background: var(--tier-free);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.tier-badge-pro {
+  background: var(--tier-pro);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.tier-badge-enterprise {
+  background: var(--tier-enterprise);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Card Styles */
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease;
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease;
+}
+
+.fade-in-down {
+  animation: fadeInDown 0.6s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+}

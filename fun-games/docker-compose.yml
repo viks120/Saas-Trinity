@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # Nginx reverse proxy
+  fun-games-nginx:
+    container_name: fun-games-nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "1234:80"
+    depends_on:
+      - fun-games-frontend
+      - fun-games-backend
+    networks:
+      - fun-games-network
+
+  # React + Vite frontend
+  fun-games-frontend:
+    container_name: fun-games-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    environment:
+      - VITE_API_URL=http://localhost:1234/api
+    networks:
+      - fun-games-network
+
+  # FastAPI backend
+  fun-games-backend:
+    container_name: fun-games-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=postgresql://fun_games_user:fun_games_password@fun-games-db:5432/fun_games
+      - SESSION_SECRET=change-this-secret-key-in-production-must-be-32-bytes-long
+      - SESSION_EXPIRATION_HOURS=24
+      - DEBUG=true
+      - ALLOWED_ORIGINS=http://localhost:1234
+      - SECURE_COOKIES=false
+      - ADMIN_EMAIL=admin@fungames.com
+      - ADMIN_PASSWORD=admin123
+      - GAME_ORIGIN=http://localhost:1234
+      - MAX_SCORE_VALUE=999999
+    depends_on:
+      - fun-games-db
+    networks:
+      - fun-games-network
+
+  # PostgreSQL database
+  fun-games-db:
+    container_name: fun-games-db
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=fun_games_user
+      - POSTGRES_PASSWORD=fun_games_password
+      - POSTGRES_DB=fun_games
+    volumes:
+      - fun_games_data:/var/lib/postgresql/data
+    networks:
+      - fun-games-network
+
+volumes:
+  fun_games_data:
+
+networks:
+  fun-games-network:
+    driver: bridge

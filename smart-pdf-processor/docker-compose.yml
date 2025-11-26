@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  # Nginx reverse proxy
+  pdf-nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - pdf-frontend
+      - pdf-backend
+    networks:
+      - pdf-network
+
+  # React + Vite frontend
+  pdf-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    environment:
+      - VITE_API_URL=http://localhost:8080/api
+    networks:
+      - pdf-network
+
+  # FastAPI backend
+  pdf-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+      - ./uploads:/app/uploads
+    environment:
+      - DATABASE_URL=postgresql://pdf_user:pdf_password@pdf-db:5432/smart_pdf_processor
+      - SESSION_SECRET=change-this-secret-key-in-production-must-be-32-bytes-long
+      - SESSION_EXPIRATION_HOURS=24
+      - DEBUG=true
+      - ALLOWED_ORIGINS=http://localhost:8080
+      - SECURE_COOKIES=false
+      - ADMIN_EMAIL=admin@example.com
+      - ADMIN_PASSWORD=admin123
+      - PDF_UPLOAD_DIR=uploads
+      - PDF_MAX_SIZE_MB=10
+      - PDF_PROCESSING_TIMEOUT=300
+    depends_on:
+      pdf-db:
+        condition: service_healthy
+    networks:
+      - pdf-network
+
+  # PostgreSQL database
+  pdf-db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=pdf_user
+      - POSTGRES_PASSWORD=pdf_password
+      - POSTGRES_DB=smart_pdf_processor
+    volumes:
+      - pdf_postgres_data:/var/lib/postgresql/data
+    networks:
+      - pdf-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pdf_user -d smart_pdf_processor"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pdf_postgres_data:
+
+networks:
+  pdf-network:
+    driver: bridge
