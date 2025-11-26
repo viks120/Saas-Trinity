@@ -7,7 +7,7 @@ A comprehensive demonstration of building three interconnected SaaS applications
 
 ## 🎥 Demo Video
 
-[Link to Demo Video - YouTube/Vimeo] (Under 3 minutes)
+[Link to Demo Video - YouTube/Vimeo]
 
 ## 📋 Project Overview
 
@@ -224,25 +224,3 @@ docker compose up --build
 
 MIT License - See LICENSE file in each application directory
 
-## 🏆 Hackathon Submission Checklist
-
-- ✅ Three separate applications in separate folders
-- ✅ `.kiro` directory included (not gitignored)
-- ✅ Specs, hooks, and steering documents present
-- ✅ Open source license (MIT)
-- ✅ Comprehensive README with Kiro usage explanation
-- ✅ Demo video (under 3 minutes)
-- ✅ All code is original work
-- ✅ Functional applications with Docker deployment
-
-## 🤝 Acknowledgments
-
-Built entirely with Kiro AI during the Skeleton Crew Hackathon. This project demonstrates the power of AI-assisted development when combined with proper software engineering practices.
-
-## 📧 Contact
-
-[Your contact information]
-
----
-
-**Note:** This is a hackathon submission showcasing Kiro's capabilities. All three applications are fully functional and production-ready.
